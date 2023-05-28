@@ -1,0 +1,18 @@
+{
+    "@@locale": "es",
+    "contacttitle": "Seleccionar contacto",
+    "search": "Buscar",
+    "add": "Agregar contacto",
+    "create": "Crear contacto",
+    "name": "Nombre",
+    "nametext": "Por favor ingresa un nombre",
+    "email": "Correo electrónico",
+    "emailtext": "Por favor ingresa un correo electrónico",
+    "phone": "Teléfono",
+    "phonetext": "Por favor ingresa un número de teléfono",
+    "title": "Agregar contacto",
+    "subtitle": "Agregar contacto con los detalles apropiados",
+    "proceed": "PROCESAR",
+    "fisrtstatus": "1/4"
+  }
+  

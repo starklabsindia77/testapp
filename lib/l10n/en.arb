@@ -1,0 +1,18 @@
+{
+    "@@locale": "en",
+    "contacttitle":"Select Contact",
+    "search": "Search",
+    "add": "Add Contact",
+    "create": "Create Contact",
+    "name": "Name",
+    "nametext":"Please enter a name",
+    "email": "Email",
+    "emailtext":"Please enter a email",
+    "phone": "Phone",
+    "phonetext":"Please enter a phone",
+    "title": "Add Contact",
+    "subtitle": "Add Contact with appropriate details",
+    "proceed": "PROCEED",
+    "fisrtstatus" : "1/4"    
+  }
+  

@@ -5,12 +5,15 @@ import 'package:get/get.dart';
 import 'package:testapp/app/viewmodels/contact_controller.dart';
 import 'package:testapp/app/views/add_contact_page.dart';
 import 'package:testapp/constant/app_color.dart';
+import 'package:testapp/l10n/app_localizations.dart';
 
 class ContactView extends StatelessWidget {
   final ContactController contactController = Get.put(ContactController());
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final isSpanish = Localizations.localeOf(context).languageCode == 'es';
     return Scaffold(
       backgroundColor: AppColor.primary,
       body: SafeArea(
@@ -25,10 +28,10 @@ class ContactView extends StatelessWidget {
                     onPressed: () => Get.back(),
                   ),
                   SizedBox(
-                    width: 80,
+                    width: isSpanish ? 60 : 80,
                   ),
                   Text(
-                    'Select Contact',
+                    isSpanish ? loc.contacttitle_es : loc.contacttitle,
                     style: TextStyle(
                       fontFamily: 'SF Pro Display',
                       fontSize: 15.0,
@@ -45,7 +48,7 @@ class ContactView extends StatelessWidget {
                 height: 50,
                 child: TextFormField(
                   decoration: InputDecoration(
-                    labelText: 'Search',
+                    labelText: isSpanish ? loc.search_es : loc.search,
                     labelStyle: TextStyle(color: Colors.grey),
                     filled: true,
                     fillColor: AppColor.textfield,
@@ -118,14 +121,14 @@ class ContactView extends StatelessWidget {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25.0),
         child: SizedBox(
-          width: 140,
+          width: 180,
           child: FloatingActionButton.extended(
             backgroundColor: AppColor.secondary,
             onPressed: () {
               // Navigate to the AddContactPage
               Get.to(() => AddContactPage());
             },
-            label: Text('Add Contact', style: TextStyle(color: Colors.white)),
+            label: Text(isSpanish ? loc.add_es : loc.add, style: TextStyle(color: Colors.white)),
           ),
         ),
       ),

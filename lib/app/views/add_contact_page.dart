@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:testapp/constant/app_color.dart';
+import 'package:testapp/l10n/app_localizations.dart';
 
 class AddContactPage extends StatefulWidget {
   @override
@@ -23,6 +24,8 @@ class _AddContactPageState extends State<AddContactPage>
 
   @override
   Widget build(BuildContext context) {
+    final loc = AppLocalizations.of(context)!;
+    final isSpanish = Localizations.localeOf(context).languageCode == 'es';
     return KeyboardVisibilityProvider(
       controller: _keyboardVisibilityController,
       child: Scaffold(
@@ -43,9 +46,9 @@ class _AddContactPageState extends State<AddContactPage>
                               icon: Icon(Icons.arrow_back, color: Colors.white),
                               onPressed: () => Get.back(),
                             ),
-                            SizedBox(width: 80),
+                            SizedBox(width:80),
                             Text(
-                              'Create Contact',
+                              isSpanish ? loc.create_es : loc.create,
                               style: TextStyle(
                                 fontFamily: 'SF Pro Display',
                                 fontSize: 15.0,
@@ -107,7 +110,7 @@ class _AddContactPageState extends State<AddContactPage>
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Add Contact',
+                                    isSpanish ? loc.title_es : loc.title,
                                     style: TextStyle(
                                       fontSize: 20.0,
                                       fontWeight: FontWeight.bold,
@@ -115,9 +118,9 @@ class _AddContactPageState extends State<AddContactPage>
                                   ),
                                   SizedBox(height: 10.0),
                                   Text(
-                                    'Add Contact with appropriate details',
+                                    isSpanish ? loc.subtitle_es : loc.subtitle,
                                     style: TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: isSpanish ? 14.0 : 16.0,
                                       color: AppColor.primary,
                                     ),
                                   ),
@@ -137,7 +140,7 @@ class _AddContactPageState extends State<AddContactPage>
                               TextFormField(
                                 controller: nameController,
                                 decoration: InputDecoration(
-                                  labelText: 'Name',
+                                  labelText: isSpanish ? loc.name_es : loc.name,
                                   labelStyle: TextStyle(color: Colors.white),
                                   filled: true,
                                   fillColor: AppColor.textfield,
@@ -154,7 +157,7 @@ class _AddContactPageState extends State<AddContactPage>
                                 style: TextStyle(color: Colors.white),
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please enter a name';
+                                    return isSpanish ? loc.nametext_es : loc.nametext;
                                   }
                                   return null;
                                 },
@@ -163,7 +166,7 @@ class _AddContactPageState extends State<AddContactPage>
                               TextFormField(
                                 controller: emailController,
                                 decoration: InputDecoration(
-                                  labelText: 'Email',
+                                  labelText: isSpanish ? loc.email_es : loc.email,
                                   labelStyle: TextStyle(color: Colors.white),
                                   filled: true,
                                   fillColor: AppColor.textfield,
@@ -180,7 +183,7 @@ class _AddContactPageState extends State<AddContactPage>
                                 style: TextStyle(color: Colors.white),
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please enter an email';
+                                    return isSpanish ? loc.emailtext_es : loc.emailtext;
                                   }
                                   return null;
                                 },
@@ -189,7 +192,7 @@ class _AddContactPageState extends State<AddContactPage>
                               TextFormField(
                                 controller: mobileController,
                                 decoration: InputDecoration(
-                                  labelText: 'Phone',
+                                  labelText: isSpanish ? loc.phone_es : loc.phone,
                                   labelStyle: TextStyle(color: Colors.white),
                                   filled: true,
                                   fillColor: AppColor.textfield,
@@ -206,7 +209,7 @@ class _AddContactPageState extends State<AddContactPage>
                                 style: TextStyle(color: Colors.white),
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Please enter a phone number';
+                                    return isSpanish ? loc.phonetext_es : loc.phonetext;
                                   }
                                   return null;
                                 },
@@ -249,7 +252,7 @@ class _AddContactPageState extends State<AddContactPage>
                       }
                     },
                     label:
-                        Text('PROCEED', style: TextStyle(color: Colors.white)),
+                        Text(isSpanish ? loc.proceed_es : loc.proceed, style: TextStyle(color: Colors.white)),
                   ),
                 ),
               );
