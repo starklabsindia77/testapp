@@ -16,15 +16,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Contact App',
       debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        Locale('en'), // English
-        Locale('es'), // Spanish
-      ],
+      
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
