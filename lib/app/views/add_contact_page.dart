@@ -6,6 +6,8 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:testapp/constant/app_color.dart';
 import 'package:testapp/l10n/app_localizations.dart';
+import 'package:testapp/app/viewmodels/contact_controller.dart';
+import 'package:testapp/app/models/contact_model.dart';
 
 class AddContactPage extends StatefulWidget {
   @override
@@ -20,6 +22,7 @@ class _AddContactPageState extends State<AddContactPage>
   final TextEditingController emailController = TextEditingController();
   final KeyboardVisibilityController _keyboardVisibilityController =
       KeyboardVisibilityController();
+  final ContactController contactController = Get.put(ContactController());
 
 
   @override
@@ -248,6 +251,13 @@ class _AddContactPageState extends State<AddContactPage>
                     backgroundColor: AppColor.secondary,
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
+                        final newContact = Contact(
+                          name: nameController.text,
+                          email: emailController.text,
+                          mobile: mobileController.text,
+                        );
+                        // Call the addContact function to add the new contact
+                        contactController.addContact(newContact);
                         Get.back();
                       }
                     },
