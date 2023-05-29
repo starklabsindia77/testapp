@@ -255,8 +255,7 @@ class _AddContactPageState extends State<AddContactPage>
               left: 0,
               right: 0,
               child: SvgPicture.asset(
-                'assets/svg/Parten.svg',
-                fit: BoxFit.fill,
+                'assets/svg/Parten.svg',                
               ),
             ),
           ],
