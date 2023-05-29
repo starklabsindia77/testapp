@@ -25,6 +25,29 @@ class _AddContactPageState extends State<AddContactPage>
   final ContactController contactController = Get.put(ContactController());
 
 
+   // Animation properties
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize animation
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final loc = AppLocalizations.of(context)!;
@@ -258,7 +281,8 @@ class _AddContactPageState extends State<AddContactPage>
                         );
                         // Call the addContact function to add the new contact
                         contactController.addContact(newContact);
-                        Get.back();
+                        // Get.back();
+                        showSuccessPopup();
                       }
                     },
                     label:
@@ -270,6 +294,62 @@ class _AddContactPageState extends State<AddContactPage>
           },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      ),
+    );
+  }
+
+
+  void showSuccessPopup() {
+    // Reset the animation
+    Get.dialog(buildSuccessPopup(context));
+
+    _animationController.reset();
+
+    // Start the animation
+    _animationController.forward().then((_) {
+      // Animation completed, reset form and navigate back
+      nameController.clear();
+      emailController.clear();
+      mobileController.clear();
+      Get.back();
+    });
+  }
+
+  Widget buildSuccessPopup(BuildContext context) {
+    return Center(
+      child: Container(
+        width: 200.0,
+        height: 200.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return FadeTransition(
+                  opacity: _animation,
+                  child: ScaleTransition(
+                    scale: _animation,
+                    child: Icon(
+                      Icons.check_circle,
+                      color: AppColor.primary,
+                      size: 80.0,
+                    ),
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 16.0),
+            Text(
+              'Contact Added',
+              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: AppColor.primarySoft), 
+            ),
+          ],
+        ),
       ),
     );
   }
