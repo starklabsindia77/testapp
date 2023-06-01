@@ -89,6 +89,11 @@ class ContactController extends GetxController {
     mobileController.clear();
   }
 
+  void clearSearch() {
+    contactList.assignAll(allContactList);
+  }
 
-
+  String getLocalizedText(String en, String es) {
+    return Get.locale?.languageCode == 'es' ? es : en;
+  }
 }
