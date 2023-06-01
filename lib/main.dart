@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final defaultLocale = WidgetsBinding.instance.window.locale;
     // final locale = Locale(defaultLocale.languageCode.isEmpty ? 'es' : defaultLocale.languageCode);
-    final Locale locale = Locale('en');
+    final Locale locale = Locale('es');
 
     return GetMaterialApp(
       title: 'Contact App',

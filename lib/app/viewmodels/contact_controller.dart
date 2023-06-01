@@ -1,11 +1,17 @@
 import 'package:get/get.dart';
 import 'package:testapp/app/models/contact_model.dart';
+import 'package:flutter/material.dart';
 
 class ContactController extends GetxController {
   // Mock list of contacts.
   var contactList = List<Contact>.empty(growable: true).obs;
   var allContactList = List<Contact>.empty(growable: true).obs; // List to hold all contacts
   RxInt selectedContactIndex = (-1).obs;  // Init with -1 to indicate no contact is selected
+
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController mobileController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
 
   @override
@@ -64,4 +70,25 @@ class ContactController extends GetxController {
   void addContact(Contact newContact) {
     contactList.add(newContact);
   }
+
+  bool validateForm() {
+    return formKey.currentState!.validate();
+  }
+
+  Contact createContact() {
+    return Contact(
+      name: nameController.text,
+      email: emailController.text,
+      mobile: mobileController.text,
+    );
+  }
+
+  void clearForm() {
+    nameController.clear();
+    emailController.clear();
+    mobileController.clear();
+  }
+
+
+
 }
