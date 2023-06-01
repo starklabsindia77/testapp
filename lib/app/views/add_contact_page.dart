@@ -1,5 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first, library_private_types_in_public_api
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -16,25 +15,26 @@ import 'package:testapp/app/widgets/custom_container.dart';
 import 'package:testapp/app/widgets/app_bar.dart';
 
 
-class AddContactPage extends StatefulWidget {
-  const AddContactPage({Key? key}) : super(key: key);
 
+class AddContactPage extends StatefulWidget {
   @override
   _AddContactPageState createState() => _AddContactPageState();
 }
 
-class _AddContactPageState extends State<AddContactPage>
-    with SingleTickerProviderStateMixin {
-  final ContactController _contactController = Get.put(ContactController());
+class _AddContactPageState extends State<AddContactPage> with SingleTickerProviderStateMixin {
+  final KeyboardVisibilityController _keyboardVisibilityController = KeyboardVisibilityController();
+  final ContactController contactController = Get.put(ContactController());
+
+  // Animation properties
   late AnimationController _animationController;
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 2));
-    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+
+    // Initialize animation
+    _initAnimation();
   }
 
   @override
@@ -43,19 +43,68 @@ class _AddContactPageState extends State<AddContactPage>
     super.dispose();
   }
 
+  void _initAnimation() {
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    );
+
+    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+  }
+
   @override
   Widget build(BuildContext context) {
+    
+    
     return KeyboardVisibilityProvider(
+      controller: _keyboardVisibilityController,
       child: Scaffold(
         backgroundColor: AppColor.primary,
         body: Stack(
-          children: <Widget>[
-            _buildListView(),
+          children: [
+            ListView(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 0.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 16.0, left: 16.0, right: 16.0),
+                        child: AppBarWidget(
+                          title: contactController.getLocalizedText(AppLocalizations.of(context)!.create, AppLocalizations.of(context)!.create_es ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      CustomContainer(),
+                      SizedBox(height: 25),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: ContactForm(
+                          contactController: contactController,
+                          nameLabel: contactController.getLocalizedText( AppLocalizations.of(context)!.name, AppLocalizations.of(context)!.name_es ),
+                          nameError: contactController.getLocalizedText( AppLocalizations.of(context)!.nametext, AppLocalizations.of(context)!.nametext_es),
+                          emailLabel: contactController.getLocalizedText( AppLocalizations.of(context)!.email, AppLocalizations.of(context)!.email_es ),
+                          emailError:
+                              contactController.getLocalizedText( AppLocalizations.of(context)!.emailtext, AppLocalizations.of(context)!.emailtext_es  ),
+                          phoneLabel: contactController.getLocalizedText( AppLocalizations.of(context)!.phone, AppLocalizations.of(context)!.phone_es ),
+                          phoneError:
+                              contactController.getLocalizedText( AppLocalizations.of(context)!.phonetext, AppLocalizations.of(context)!.phonetext_es),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
             Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: SvgPicture.asset('assets/svg/Parten.svg')),
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: SvgPicture.asset(
+                'assets/svg/Parten.svg',
+              ),
+            ),
           ],
         ),
         floatingActionButton: KeyboardVisibilityBuilder(
@@ -70,14 +119,14 @@ class _AddContactPageState extends State<AddContactPage>
                   child: FloatingActionButton.extended(
                     backgroundColor: AppColor.secondary,
                     onPressed: () {
-                      if (_contactController.validateForm()) {
-                        final newContact = _contactController.createContact();
+                      if (contactController.validateForm()) {
+                        final newContact = contactController.createContact();
                         // Call the addContact function to add the new contact
-                        _contactController.addContact(newContact);
+                        contactController.addContact(newContact);
                         showSuccessPopup();
                       }
                     },
-                    label: Text(_contactController.getLocalizedText(AppLocalizations.of(context)!.proceed, AppLocalizations.of(context)!.proceed_es),
+                    label: Text(contactController.getLocalizedText(AppLocalizations.of(context)!.proceed, AppLocalizations.of(context)!.proceed_es),
                         style: TextStyle(color: Colors.white)),
                   ),
                 ),
@@ -90,71 +139,21 @@ class _AddContactPageState extends State<AddContactPage>
     );
   }
 
-  ListView _buildListView() {
-    return ListView(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 0.0),
-          child: Column(
-            children: <Widget>[
-              _buildAppBarWidget(),
-              const SizedBox(height: 10),
-              const CustomContainer(),
-              const SizedBox(height: 25),
-              _buildContactForm(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  AppBarWidget _buildAppBarWidget() {
-  return AppBarWidget(
-    title: _contactController.getLocalizedText(
-        AppLocalizations.of(context)!.create,
-        AppLocalizations.of(context)!.create_es) ,
-  );
-}
-
-  ContactForm _buildContactForm() {
-    return ContactForm(
-      contactController: _contactController,
-      nameLabel: _contactController.getLocalizedText(
-          AppLocalizations.of(context)!.name,
-          AppLocalizations.of(context)!.name_es),
-      nameError: _contactController.getLocalizedText(
-          AppLocalizations.of(context)!.nametext,
-          AppLocalizations.of(context)!.nametext_es),
-      emailLabel: _contactController.getLocalizedText(
-          AppLocalizations.of(context)!.email,
-          AppLocalizations.of(context)!.email_es),
-      emailError: _contactController.getLocalizedText(
-          AppLocalizations.of(context)!.emailtext,
-          AppLocalizations.of(context)!.emailtext_es),
-      phoneLabel: _contactController.getLocalizedText(
-          AppLocalizations.of(context)!.phone,
-          AppLocalizations.of(context)!.phone_es),
-      phoneError: _contactController.getLocalizedText(
-          AppLocalizations.of(context)!.phonetext,
-          AppLocalizations.of(context)!.phonetext_es),
-    );
-  }
-
-  
-
   void showSuccessPopup() {
-    Get.dialog(_buildSuccessPopup());
+    // Reset the animation
+    Get.dialog(buildSuccessPopup(context));
 
     _animationController.reset();
 
+    // Start the animation
     _animationController.forward().then((_) {
-      _contactController.clearForm();
+      // Animation completed, reset form and navigate back
+      contactController.clearForm();
       Get.back();
     });
   }
 
-  Widget _buildSuccessPopup() {
+  Widget buildSuccessPopup(BuildContext context) {
     return Center(
       child: Container(
         width: 200.0,
@@ -165,39 +164,34 @@ class _AddContactPageState extends State<AddContactPage>
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildAnimatedBuilder(),
-            const SizedBox(height: 16.0),
+          children: [
+            AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return FadeTransition(
+                  opacity: _animation,
+                  child: ScaleTransition(
+                    scale: _animation,
+                    child: Icon(
+                      Icons.check_circle,
+                      color: AppColor.primary,
+                      size: 80.0,
+                    ),
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 16.0),
             Text(
               'Contact Added',
               style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                color: AppColor.primarySoft,
-              ),
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: AppColor.primarySoft),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  AnimatedBuilder _buildAnimatedBuilder() {
-    return AnimatedBuilder(
-      animation: _animationController,
-      builder: (context, child) {
-        return FadeTransition(
-          opacity: _animation,
-          child: ScaleTransition(
-            scale: _animation,
-            child: const Icon(
-              Icons.check_circle,
-              color: AppColor.primary,
-              size: 80.0,
-            ),
-          ),
-        );
-      },
     );
   }
 }
